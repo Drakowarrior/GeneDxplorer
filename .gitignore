@@ -90,3 +90,4 @@ Desktop.ini
 playwright-report/
 test-results/
 .nyc_output/
+report_screenshots/

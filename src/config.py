@@ -68,7 +68,12 @@ class AppConfig:
 
         # Server & Security
         self.API_HOST = get_env_str("API_HOST", "127.0.0.1")
-        self.API_PORT = get_env_int("API_PORT", 8000)
+        # Support Render's standard $PORT env var as well as API_PORT
+        port_val = os.environ.get("PORT", os.environ.get("API_PORT", "8000")).strip()
+        try:
+            self.API_PORT = int(port_val)
+        except ValueError:
+            raise ConfigError(f"API_PORT/PORT must be a valid integer. Got: '{port_val}'")
         if not (1 <= self.API_PORT <= 65535):
             raise ConfigError(f"API_PORT must be between 1 and 65535. Got: {self.API_PORT}")
 
